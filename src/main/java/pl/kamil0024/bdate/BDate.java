@@ -1,6 +1,7 @@
 package pl.kamil0024.bdate;
 
 import lombok.Data;
+import org.joda.time.DateTime;
 import pl.kamil0024.bdate.util.BLanguage;
 import pl.kamil0024.bdate.util.Time;
 
@@ -14,28 +15,34 @@ import java.util.TimeZone;
 public class BDate {
 
     private long timestamp;
+    private DateTime dateTime;
     private BLanguage lang = null;
 
     public BDate() {
         this.timestamp = System.currentTimeMillis();
+        this.dateTime = new DateTime(this.timestamp);
     }
 
     public BDate(long timestamp) {
         this.timestamp = timestamp;
+        this.dateTime = new DateTime(timestamp);
     }
 
     public BDate(BLanguage lang) {
         this.timestamp = System.currentTimeMillis();
+        this.dateTime = new DateTime(this.timestamp);
         this.lang = lang;
     }
 
     public BDate(long timestamp, BLanguage lang) {
         this.timestamp = timestamp;
+        this.dateTime = new DateTime(this.timestamp);
         this.lang = lang;
     }
 
     public BDate(long timestamp, TimeZone timeZone) {
         this.timestamp = timestamp - (timeZone.getOffset(timestamp));
+        this.dateTime = new DateTime(this.timestamp);
     }
 
     public String difference(long ms) {

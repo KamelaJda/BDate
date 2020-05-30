@@ -20,8 +20,11 @@ public class Test {
         // wyskoczy nam "Tak: 1 godz. 29 min."
 
         simpleCooldown();
-        System.out.println("Kekw1:" + betweenHours());
-        System.out.println("Kekw2:" + betweenHoursInOtherDay());
+        System.out.println("test1: " + betweenHours(7, 5, 20, 50)); // sprwadzamy czy jest pomiędzy 17:05 a 20:50
+        System.out.println("test2: " + betweenHoursInOtherDay("19:00:00", "5:00:00", "17:00:00")); // false
+        System.out.println("test3: " + betweenHoursInOtherDay("19:00:00", "5:00:00", "20:00:00")); // true
+        System.out.println("test4: " + betweenHoursInOtherDay("19:00:00", "5:00:00", "3:00:00")); // true
+        System.out.println("test5: " + betweenHoursInOtherDay("19:00:00", "5:00:00", "8:00:00")); // false
     }
     
     public static void simpleCooldown() {
@@ -37,26 +40,32 @@ public class Test {
         System.out.println("---------------------------------");
     }
 
-    public static boolean betweenHours() { // sprwadzamy czy jest pomiędzy 17:05 a 18:50
+    public static boolean betweenHours(int date1hour, int date1min, int date2hour, int date2min) {
         DateTime dt = new DateTime();
         int min = dt.getMinuteOfHour();
         int hour = dt.getHourOfDay();
 
-        boolean minimum = hour >= 17 && min >= 5;
-        boolean max = hour <= 18;
-        if (max && min > 50) max = false; // to serio musi tak być xD
+        boolean minimum = hour >= date1hour && min >= date1min;
+        boolean max = hour <= date2hour;
+        if (max && min > date2min) max = false; // to serio musi tak być xD
 
         return minimum && max;
     }
 
-    public static boolean betweenHoursInOtherDay() throws ParseException { // sprawdzamy czy jest pomiędzy 19 a 5
-        String   pat    = "HH:mm:ss";
-        BDate    start  = BDate.parse(pat, "19:00:21");
-        BDate    end    = BDate.parse(pat, "5:00:37").add(1, Time.DAY);
-        DateTime dt     = new DateTime();
-        BDate    now    = BDate.parse(pat, dt.getHourOfDay() + ":" + dt.getMinuteOfHour() + ":00");
+    public static boolean betweenHoursInOtherDay(String date1, String date2) throws ParseException {
+        BDate bt     = new BDate();
+        String   st    =  bt.getDateTime().getHourOfDay() + ":" + bt.getDateTime().getMinuteOfHour() + ":00";
+        return betweenHoursInOtherDay(date1, date2, st);
+    }
 
-        return now.getTimestamp() > start.getTimestamp() && now.getTimestamp() < end.getTimestamp();
+    public static boolean betweenHoursInOtherDay(String date1, String date2, String teraz) throws ParseException { // sprawdzamy czy jest pomiędzy 19 a 5
+        String   pat    = "HH:mm:ss";
+        BDate    start  = BDate.parse(pat, date1);
+        BDate    end    = BDate.parse(pat, date2).add(1, Time.DAY);
+        BDate    now    = BDate.parse(pat, teraz);
+        BDate    now1   = BDate.parse(pat, teraz).add(1, Time.DAY);
+
+        return now.getTimestamp() > start.getTimestamp() || now1.getTimestamp() < end.getTimestamp();
     }
     
     private static BLanguage getLang() { // ustawiamy jezyk
