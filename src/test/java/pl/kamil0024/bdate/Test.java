@@ -1,5 +1,6 @@
+package pl.kamil0024.bdate;
+
 import org.joda.time.DateTime;
-import pl.kamil0024.bdate.BDate;
 import pl.kamil0024.bdate.util.BLanguage;
 import pl.kamil0024.bdate.util.Time;
 
