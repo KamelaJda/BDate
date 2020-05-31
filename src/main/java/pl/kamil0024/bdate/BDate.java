@@ -50,12 +50,16 @@ public class BDate {
     }
 
     public BDate add(long count, Time type) {
-        setTimestamp(getTimestamp() + (type.getMs() * count));
-        return this;
+        return set(getTimestamp() + (type.getMs() * count));
     }
 
     public BDate remove(long count, Time type) {
-        setTimestamp(getTimestamp() - (type.getMs() * count));
+        return set(getTimestamp() - (type.getMs() * count));
+    }
+
+    public BDate set(long ms) {
+        setTimestamp(ms);
+        setDateTime(new DateTime(getTimestamp()));
         return this;
     }
 
